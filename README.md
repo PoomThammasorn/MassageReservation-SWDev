@@ -15,8 +15,8 @@ This is a simple massage reservation system designed to facilitate the booking o
 
 ## Technologies Used
 
-- Backend: Node.js, Express.js
-- Database: MongoDB
+- Backend: [Node.js](https://nodejs.org/en), [Express.js](https://expressjs.com/)
+- Database: [MongoDB](https://www.mongodb.com/)
 
 ## Installation
 
