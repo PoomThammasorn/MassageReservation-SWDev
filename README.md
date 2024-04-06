@@ -49,6 +49,11 @@ npm install
 
 5. Run the backend server:
 
-```bash
-npm run dev
-```
+- To run the server in production mode:
+  ```bash
+  npm start
+  ```
+- To run the server in development mode:
+  ```bash
+  npm run dev
+  ```
