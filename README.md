@@ -40,12 +40,13 @@ npm install
 
 4. Set up environment variables:
 
-   - Create a `config.env` file in the root directory.
+   - Create a `config.env` file in `./configs` directory.
    - Define the following environment variables:
      - `PORT`: Port number for running the server.
-     - `MONGODB_URI`: MongoDB connection URI.
-     - `JWT_SECRET`: Secret key for JWT token generation.
-     
+     <!-- - `MONGODB_URI`: MongoDB connection URI.
+     - `JWT_SECRET`: Secret key for JWT token generation. -->
+     - `NODE_ENV`: Environment mode (`development` or `production`).
+
 5. Run the backend server:
 
 ```bash
