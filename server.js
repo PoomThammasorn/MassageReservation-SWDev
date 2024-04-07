@@ -7,8 +7,12 @@ const helmet = require("helmet");
 const { xss } = require("express-xss-sanitizer");
 const rateLimit = require("express-rate-limit");
 const hpp = require("hpp");
+const connectDB = require("./configs/db");
 
 const app = express();
+
+// Connect to database
+connectDB();
 
 // Load env vars
 dotenv.config({ path: "./config/config.env" });
