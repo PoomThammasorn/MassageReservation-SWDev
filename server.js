@@ -15,7 +15,7 @@ const app = express();
 connectDB();
 
 // Load env vars
-dotenv.config({ path: "./config/config.env" });
+dotenv.config({ path: "./configs/config.env" });
 
 // Enable CORS
 app.use(cors());
