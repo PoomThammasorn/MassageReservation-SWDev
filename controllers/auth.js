@@ -19,7 +19,7 @@ exports.register = async (req, res, next) => {
 		// res.status(200).json({ success: true, token });
 		sendTokenResponse(user, 200, res);
 	} catch (err) {
-		res.status(400).json({ success: false });
+		res.status(400).json({ success: false, msg: "Cannot create user" });
 		console.log(err.stack);
 	}
 };
@@ -44,7 +44,7 @@ exports.login = async (req, res, next) => {
 		if (!user) {
 			return res
 				.status(401)
-				.json({ success: false, msg: "Invalid credentials" });
+				.json({ success: false, msg: "Invalid username or password" });
 		}
 
 		// Check if password matches
@@ -53,7 +53,7 @@ exports.login = async (req, res, next) => {
 		if (!isMatch) {
 			return res
 				.status(401)
-				.json({ success: false, msg: "Invalid credentials" });
+				.json({ success: false, msg: "Invalid username or password" });
 		}
 
 		// const token = user.getSignedJwtToken();
@@ -103,9 +103,13 @@ const sendTokenResponse = (user, statusCode, res) => {
 			success: true,
 			token,
 			// add for frontend
-			_id: user._id,
-			name: user.name,
-			email: user.email,
+			data: {
+				id: user._id,
+				name: user.name,
+				email: user.email,
+				tel: user.tel,
+				role: user.role,
+			},
 			// end for frontend
 		});
 };
@@ -115,5 +119,8 @@ const sendTokenResponse = (user, statusCode, res) => {
 // @access  Private
 exports.getMe = async (req, res, next) => {
 	const user = await User.findById(req.user.id);
-	res.status(200).json({ success: true, data: user });
+	const { _id, name, email, tel, role } = user;
+	res
+		.status(200)
+		.json({ success: true, data: { id: _id, name, email, tel, role } });
 };

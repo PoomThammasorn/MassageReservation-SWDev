@@ -19,7 +19,7 @@ const UserSchema = new mongoose.Schema({
 	tel: {
 		type: String,
 		required: [true, "Please add a phone number"],
-		unique: true,
+		// unique: true,
 		match: [
 			/^(09|08|06)\d{8}$/,
 			(props) => `${props.value} is not a valid phone number`,

@@ -1,0 +1,176 @@
+openapi: "3.0.2"
+info:
+  title: "Library API"
+  version: "1.0.0"
+  description: "A simple Express Massage Reservation System API"
+servers:
+  - url: http://localhost:8080/api/v1
+    description: "Local server"
+tags:
+  - name: "Authentications"
+    description: "Authentication operations"
+components:
+  schemas:
+    User:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          format: "uuid"
+          description: "The auto-generated id of the user"
+          example: "661268a31c28dc934e488243"
+        email:
+          type: "string"
+          format: "email"
+          description: "User email"
+          example: "user@email.com"
+        name:
+          type: "string"
+          description: "User name"
+          example: "John Doe"
+        tel:
+          type: "string"
+          description: "User telephone number"
+          example: "0812345678"
+        role:
+          type: "string"
+          description: "User role"
+          example: "user"
+          enum:
+            - "user"
+            - "admin"
+    UserLogin:
+      type: "object"
+      properties:
+        email:
+          type: "string"
+          description: "User email"
+          example: "user@email.com"
+        password:
+          type: "string"
+          description: "User password"
+          example: "password"
+    UserResponse:
+      type: "object"
+      properties:
+        success:
+          type: "boolean"
+          description: "Login success status"
+        token:
+          type: "string"
+          description: "JWT token"
+        data:
+          $ref: "#/components/schemas/User"
+    UserRegister:
+      type: "object"
+      properties:
+        email:
+          type: "string"
+          format: "email"
+          description: "User email"
+          example: "user@email.com"
+        password:
+          type: "string"
+          description: "User password"
+          example: "password"
+        name:
+          type: "string"
+          description: "User name"
+          example: "John Doe"
+        tel:
+          type: "string"
+          description: "User telephone number"
+          example: "0812345678"
+        role:
+          type: "string"
+          description: "User role"
+          example: "user"
+          enum:
+            - "user"
+            - "admin"
+    MeResponse:
+      type: "object"
+      properties:
+        success:
+          type: "boolean"
+          description: "Get user success status"
+        data:
+          $ref: "#/components/schemas/User"
+paths:
+  /auth/login:
+    post:
+      tags:
+        - "Authentications"
+      summary: "Login"
+      description: "Login to the system"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserLogin"
+      responses:
+        "200":
+          description: "Login successful"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+        "400":
+          description: "Invalid input"
+        "401":
+          description: "Unauthorized"
+        "500":
+          description: "Internal server error"
+
+  /auth/register:
+    post:
+      tags:
+        - "Authentications"
+      summary: "Register"
+      description: "Register to the system"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserRegister"
+      responses:
+        "200":
+          description: "Register successful"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+        "400":
+          description: "Invalid input"
+        "500":
+          description: "Internal server error"
+  /auth/logout:
+    post:
+      tags:
+        - "Authentications"
+      summary: "Logout"
+      description: "Logout from the system"
+      responses:
+        "200":
+          description: "Logout successful"
+        "500":
+          description: "Internal server error"
+  /auth/me:
+    get:
+      tags:
+        - "Authentications"
+      summary: "Get user"
+      description: "Get user information"
+      responses:
+        "200":
+          description: "Get user successful"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MeResponse"
+        "401":
+          description: "Unauthorized"
+        "500":
+          description: "Internal server error"

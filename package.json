@@ -33,7 +33,8 @@
 		"mongoose": "^8.1.3",
 		"mysql": "^2.18.1",
 		"swagger-jsdoc": "^6.0.0",
-		"swagger-ui-express": "^5.0.0"
+		"swagger-ui-express": "^5.0.0",
+		"yamljs": "^0.3.0"
 	},
 	"devDependencies": {
 		"cookie-parser": "^1.4.6",
