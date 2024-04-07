@@ -62,6 +62,10 @@ const PORT = process.env.PORT || 8080;
 // Import Swagger file
 const swaggerDocument = YAML.load("./swagger/swagger.yaml"); // For YAML format
 
+swaggerDocument.servers = [
+	{ url: `http://localhost:${PORT}/api/v1`, description: "Local server" },
+];
+
 // Set up Swagger documentation
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 

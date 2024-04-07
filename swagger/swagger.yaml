@@ -3,9 +3,6 @@ info:
   title: "Library API"
   version: "1.0.0"
   description: "A simple Express Massage Reservation System API"
-servers:
-  - url: http://localhost:8080/api/v1
-    description: "Local server"
 tags:
   - name: "Authentications"
     description: "Authentication operations"
