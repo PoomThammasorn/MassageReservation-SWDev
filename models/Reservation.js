@@ -12,7 +12,7 @@ const ReservationSchema = new mongoose.Schema({
 	},
 	massageShop: {
 		type: mongoose.Schema.ObjectId,
-		ref: "Hospital",
+		ref: "MassageShop",
 		required: true,
 	},
 	createAt: {
