@@ -7,11 +7,19 @@ const helmet = require("helmet");
 const { xss } = require("express-xss-sanitizer");
 const rateLimit = require("express-rate-limit");
 const hpp = require("hpp");
+const connectDB = require("./configs/db");
+const swaggerUi = require("swagger-ui-express");
+const YAML = require("yamljs");
 
 const app = express();
 
+const auth = require("./routes/auth");
+
 // Load env vars
 dotenv.config({ path: "./configs/config.env" });
+
+// Connect to database
+connectDB();
 
 // Enable CORS
 app.use(cors());
@@ -45,8 +53,26 @@ app.get("/", (req, res) => {
 	res.status(200).json({ success: true, data: "server is running" });
 });
 
+// Mount routers
+app.use("/api/v1/auth", auth);
+
+// Port
 const PORT = process.env.PORT || 8080;
 
-app.listen(PORT, () => {
-	console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
+// Import Swagger file
+const swaggerDocument = YAML.load("./swagger/swagger.yaml"); // For YAML format
+
+// Set up Swagger documentation
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+const server = app.listen(
+	PORT,
+	console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`)
+);
+
+// Handle unhandled promise rejections
+process.on("unhandledRejection", (err, promise) => {
+	console.log(`Error: ${err.message}`);
+	// Close server & exit process
+	server.close(() => process.exit(1));
 });

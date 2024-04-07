@@ -19,7 +19,7 @@ const UserSchema = new mongoose.Schema({
 	tel: {
 		type: String,
 		required: [true, "Please add a phone number"],
-		unique: true,
+		// unique: true,
 		match: [
 			/^(09|08|06)\d{8}$/,
 			(props) => `${props.value} is not a valid phone number`,
@@ -52,7 +52,7 @@ UserSchema.pre("save", async function (next) {
 
 // Sign JWT and return
 UserSchema.methods.getSignedJwtToken = function () {
-	return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
+	return jwt.sign({ id: this._id, role: this.role }, process.env.JWT_SECRET, {
 		expiresIn: process.env.JWT_EXPIRE,
 	});
 };
