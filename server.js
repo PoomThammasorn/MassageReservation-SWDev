@@ -11,7 +11,7 @@ const hpp = require("hpp");
 const app = express();
 
 // Load env vars
-dotenv.config({ path: "./config/config.env" });
+dotenv.config({ path: "./configs/config.env" });
 
 // Enable CORS
 app.use(cors());
