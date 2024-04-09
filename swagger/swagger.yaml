@@ -472,10 +472,12 @@ paths:
         "500":
           description: "Internal server error"
   /auth/logout:
-    post:
+    get:
       tags:
         - "Authentications"
       summary: "Logout"
+      security:
+        - bearerAuth: []
       description: "Logout from the system"
       responses:
         "200":
