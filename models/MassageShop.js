@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const timecompare = require("../utils/time");
+const timecompare = require("../utils/utils");
 
 const MassageShopSchema = new mongoose.Schema(
 	{
@@ -16,7 +16,7 @@ const MassageShopSchema = new mongoose.Schema(
 		},
 		district: {
 			type: String,
-			required: [true, "Please add a district"],
+			// required: [true, "Please add a district"],
 		},
 		province: {
 			type: String,
@@ -29,6 +29,7 @@ const MassageShopSchema = new mongoose.Schema(
 		},
 		tel: {
 			type: String,
+			required: [true, "Please add a phone number"],
 		},
 		open: {
 			type: String,
@@ -39,8 +40,9 @@ const MassageShopSchema = new mongoose.Schema(
 			validate: {
 				validator: function (value) {
 					// Check if close time is after open time
-					if (!this.close) return true; // Skip validation if close time is not set
-					return timecompare(value, this.close, true);
+					bool = !this.close || timecompare(value, this.close, true);
+					console.log(bool);
+					return bool;
 				},
 				message: "Opening time must be before closing time",
 			},
@@ -52,19 +54,27 @@ const MassageShopSchema = new mongoose.Schema(
 				/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/,
 				"Please add a valid closing time",
 			],
-			required: [true, "Please add a closing time"],
 			validate: {
 				validator: function (value) {
 					// Check if close time is after open time
-					if (!this.open) return true; // Skip validation if open time is not set
-					return timecompare(this.open, value, false);
+					bool = !this.open || timecompare(value, this.open, false);
+					console.log(bool);
+					return bool;
 				},
 				message: "Closing time must be after opening time",
 			},
+			required: [true, "Please add a closing time"],
 		},
 	},
 	{
-		toJSON: { virtuals: true },
+		toJSON: {
+			virtuals: true,
+			transform: function (doc, ret) {
+				// Remove _id and __v fields from the JSON representation
+				delete ret._id;
+				delete ret.__v;
+			},
+		},
 		toObject: { virtuals: true },
 	}
 );
