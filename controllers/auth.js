@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const { generateToken } = require("../utils/utils");
 
 // @desc    Register user
 // @route   POST /api/v1/auth/register
@@ -60,6 +61,7 @@ exports.login = async (req, res, next) => {
 		// res.status(200).json({ success: true, token });
 		sendTokenResponse(user, 200, res);
 	} catch (err) {
+		console.log(err.stack);
 		return res.status(401).json({
 			success: false,
 			msg: "Cannot convert email or password to string",
@@ -83,22 +85,11 @@ exports.logout = async (req, res, next) => {
 // Get token from model, create cookie and send response
 const sendTokenResponse = (user, statusCode, res) => {
 	// Create token
-	const token = user.getSignedJwtToken();
-
-	const options = {
-		expires: new Date(
-			Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000
-		),
-		httpOnly: true,
-	};
-
-	if (process.env.NODE_ENV === "production") {
-		options.secure = true;
-	}
+	const { token, options } = generateToken(user);
 
 	res
 		.status(statusCode)
-		// .cookie("token", token, options)
+		.cookie("token", token, options)
 		.json({
 			success: true,
 			token,

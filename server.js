@@ -14,6 +14,9 @@ const YAML = require("yamljs");
 const app = express();
 
 const auth = require("./routes/auth");
+const massageShops = require("./routes/massageShops");
+const reservations = require("./routes/reservations");
+const users = require("./routes/users");
 
 // Load env vars
 dotenv.config({ path: "./configs/config.env" });
@@ -55,6 +58,9 @@ app.get("/", (req, res) => {
 
 // Mount routers
 app.use("/api/v1/auth", auth);
+app.use("/api/v1/shops", massageShops);
+app.use("/api/v1/reservations", reservations);
+app.use("/api/v1/users", users);
 
 // Port
 const PORT = process.env.PORT || 8080;
