@@ -8,5 +8,4 @@ const { protect, authorize } = require("../middleware/auth");
 router
 	.route("/password/reset")
 	.post(protect, authorize("user", "admin"), resetForgotPassword);
-
 module.exports = router;

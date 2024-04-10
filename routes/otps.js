@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const rateLimit = require("express-rate-limit");
 
-const { validateOTP, sendOTP, checkOTP } = require("../controllers/otps");
+const { validateOTP, sendOTP} = require("../controllers/otps");
 
 const limiter = rateLimit({
 	windowMs: 1 * 60 * 1000, // 1 minute

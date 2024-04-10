@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const Reservation = require("../models/Reservation");
 
 // @desc    Reset password
 // @route   POST /api/v1/users/password/reset
@@ -30,3 +31,4 @@ exports.resetForgotPassword = async (req, res, next) => {
 			.json({ success: false, msg: "Cannot reset password" });
 	}
 };
+

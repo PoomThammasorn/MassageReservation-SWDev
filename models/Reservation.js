@@ -30,6 +30,17 @@ const ReservationSchema = new mongoose.Schema(
 				delete ret.__v;
 			},
 		},
+	},
+	{
+		toJSON: {
+			virtuals: true,
+			transform: function (doc, ret) {
+				// Remove _id and __v fields from the JSON representation
+				delete ret._id;
+				delete ret.__v;
+			},
+		},
+		toObject: { virtuals: true },
 	}
 );
 
