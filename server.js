@@ -41,8 +41,8 @@ app.use(xss());
 
 // Rate limiting
 const limiter = rateLimit({
-	windowMs: 10 * 60 * 1000, // 10 mins
-	max: 100,
+    windowMs: 10 * 60 * 1000, // 10 mins
+    max: 100,
 });
 app.use(limiter);
 
@@ -53,7 +53,7 @@ app.use(hpp());
 app.use(cookieParser());
 
 app.get("/", (req, res) => {
-	res.status(200).json({ success: true, data: "server is running" });
+    res.status(200).json({ success: true, data: "server is running" });
 });
 
 // Mount routers
@@ -69,20 +69,22 @@ const PORT = process.env.PORT || 8080;
 const swaggerDocument = YAML.load("./swagger/swagger.yaml"); // For YAML format
 
 swaggerDocument.servers = [
-	{ url: `http://localhost:${PORT}/api/v1`, description: "Local server" },
+    { url: `http://localhost:${PORT}/api/v1`, description: "Local server" },
 ];
 
 // Set up Swagger documentation
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 const server = app.listen(
-	PORT,
-	console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`)
+    PORT,
+    console.log(
+        `Server running in ${process.env.NODE_ENV} mode on port ${PORT}`
+    )
 );
 
 // Handle unhandled promise rejections
 process.on("unhandledRejection", (err, promise) => {
-	console.log(`Error: ${err.message}`);
-	// Close server & exit process
-	server.close(() => process.exit(1));
+    console.log(`Error: ${err.message}`);
+    // Close server & exit process
+    server.close(() => process.exit(1));
 });
