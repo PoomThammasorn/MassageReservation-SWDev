@@ -1,4 +1,5 @@
 const ms = require("ms");
+const nodemailer = require('nodemailer');
 
 exports.timecompare = (time1, time2, isLess) => {
     const [hour1, minute1] = time1.split(":").map(Number);
@@ -39,5 +40,29 @@ exports.generateToken = (
 };
 
 exports.mailSender = async (email, otpCode) => {
-    return true;
+	const transporter = nodemailer.createTransport({
+		host: 'smtp.gmail.com',
+		port: 587,
+		auth: {
+		  user: 'meassage.reserve.company@gmail.com',
+		  pass: 'zixy ssqx eseo mehz',
+		},
+	  });
+
+
+	  transporter.verify().then(console.log).catch(console.error);
+
+	  transporter.sendMail({
+		from: '"Your Name" <meassage.reserve.company@gmail.com>', // sender address
+		to: email, // receivers
+		subject: "Rcovery Your Meassage Reserve Account Password", // Subject line
+		text: "The OTP is " + otpCode, // plain text body
+	  }).then(info => {
+		console.log({info});
+	  }).catch(error =>{
+		console.log({error});
+		return false;
+	  })
+
+	  return true;
 };

@@ -16,11 +16,11 @@ router.use("/:shopId/reservations", require("./reservations"));
 
 router
     .route("/")
-    .get(getMassageShops)
+    .get(protect, authorize("admin", "user"), getMassageShops)
     .post(protect, authorize("admin"), createMassageShop);
 router
     .route("/:id")
-    .get(getMassageShop)
+    .get(protect, authorize("admin", "user"), getMassageShop)
     .put(protect, authorize("admin"), updateMassageShop)
     .delete(protect, authorize("admin"), deleteMassageShop);
 
