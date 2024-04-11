@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const OTP = require("../models/OTP");
-const { generateToken, mailSender } = require("../utils/utils");
+const { generateToken } = require("../utils/utils");
+const { mailSender } = require("../utils/mailService");
 const otpGenerator = require("otp-generator");
 
 // @desc    Send OTP
@@ -35,7 +36,7 @@ exports.sendOTP = async (req, res, next) => {
             otp: otpCode,
         });
 
-        console.log("OTP: ", otp.otp);
+        // console.log("OTP: ", otp.otp);
 
         // send OTP to email
         const status = await mailSender(email, otpCode);
