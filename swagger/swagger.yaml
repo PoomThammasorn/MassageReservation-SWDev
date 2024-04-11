@@ -759,3 +759,20 @@ paths:
           description: "Some error"
         "500":
           description: "Internal server error"
+  /hospitals:
+    get:
+      tags: 
+        - "Reservations"
+      summary: Returns the list of all the reservations
+      description: "If user role: get all his/her reservations\nIf admin role: get all reservations in system"
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: The list of the hospitals
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Reservations'
