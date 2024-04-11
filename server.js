@@ -7,11 +7,22 @@ const helmet = require("helmet");
 const { xss } = require("express-xss-sanitizer");
 const rateLimit = require("express-rate-limit");
 const hpp = require("hpp");
+const connectDB = require("./configs/db");
+const swaggerUi = require("swagger-ui-express");
+const YAML = require("yamljs");
 
 const app = express();
 
+const auth = require("./routes/auth");
+const massageShops = require("./routes/massageShops");
+const reservations = require("./routes/reservations");
+const users = require("./routes/users");
+
 // Load env vars
 dotenv.config({ path: "./configs/config.env" });
+
+// Connect to database
+connectDB();
 
 // Enable CORS
 app.use(cors());
@@ -30,8 +41,8 @@ app.use(xss());
 
 // Rate limiting
 const limiter = rateLimit({
-	windowMs: 10 * 60 * 1000, // 10 mins
-	max: 100,
+    windowMs: 10 * 60 * 1000, // 10 mins
+    max: 100,
 });
 app.use(limiter);
 
@@ -42,11 +53,41 @@ app.use(hpp());
 app.use(cookieParser());
 
 app.get("/", (req, res) => {
-	res.status(200).json({ success: true, data: "server is running" });
+    res.status(200).json({ success: true, data: "server is running" });
 });
 
+// Mount routers
+app.use("/api/v1/auth", auth);
+app.use("/api/v1/shops", massageShops);
+app.use("/api/v1/reservations", reservations);
+app.use("/api/v1/users", users);
+
+// Port
 const PORT = process.env.PORT || 8080;
 
-app.listen(PORT, () => {
-	console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
+// Import Swagger file
+const swaggerDocument = YAML.load("./swagger/swagger.yaml"); // For YAML format
+
+swaggerDocument.servers = [
+    { url: `http://localhost:${PORT}/api/v1`, description: "Local server" },
+];
+
+// Set up Swagger documentation
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+const server = app.listen(
+    PORT,
+    console.log(
+        `Server running in ${process.env.NODE_ENV} mode on port ${PORT}`
+    )
+);
+
+// Handle unhandled promise rejections
+process.on("unhandledRejection", (err, promise) => {
+    console.log(`Error: ${err.message}`);
+    // Close server & exit process
+    server.close(() => process.exit(1));
 });
+
+
+  
