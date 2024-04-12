@@ -759,7 +759,7 @@ paths:
           description: "Some error"
         "500":
           description: "Internal server error"
-  /hospitals:
+  /reservations:
     get:
       tags: 
         - "Reservations"
@@ -775,4 +775,33 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Reservations'
+                  $ref: '#/components/schemas/Reservation'
+    put:
+      tags: 
+        - "Reservations"
+      summary: Update the a reservations by the id
+      description: "Update the a reservations info by the id"
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: The reservation id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Reservation'
+      responses:
+        200:
+          description: The reservation was updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reservation'
+        404:
+          description: The reservation was not found
+        500:
+          description: Some error happened
