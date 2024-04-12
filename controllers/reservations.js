@@ -61,7 +61,37 @@ exports.addReservation = async (req, res, next) => {
 //@access Public
 
 exports.getReservations = async (req,res,next) =>{
-    return true;
+    let query;
+    //General users can see only thier reservations!
+    if(req.user.role !== 'admin'){
+        query = Reservation.find({user: req.user.id}).populate({
+            path: "massageShop",
+            select: "name address district province tel"
+        });
+    }else{ // iF you are admin, you can see all!
+
+        if(req.params.shopId){
+
+            console.log(req.params.shopId);
+
+            query = Reservation.find({shop: req.params.shopId}).populate({
+                path: "massageShop",
+                select: "name address district province tel",
+            });
+        }
+        else query = Reservation.find().populate({
+            path: "massageShop",
+            select: "name address district province tel",
+        });
+    }
+    try{
+        const reservations = await query;
+        res.status(200).json({success:true,count:reservations.length,data: reservations});
+
+    }catch(error){
+        console.log(error);
+        return res.status(500).json({success:false,message:"Cannot find Reservation"});
+    }
 };
 
 
