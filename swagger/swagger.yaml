@@ -779,7 +779,7 @@ paths:
     put:
       tags: 
         - "Reservations"
-      summary: Update the a reservations by the id
+      summary: Update the a reservation by the id
       description: "Update the a reservations info by the id"
       parameters:
         - in: path
@@ -805,3 +805,22 @@ paths:
           description: The reservation was not found
         500:
           description: Some error happened
+
+    delete:
+      tags: 
+        - "Reservations"
+      summary: Remove the reservation by id
+      description: "Remove the reservation info by the id"
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: The reservation id  
+      responses:
+        200:
+          description: The reservation was deleted
+        404:
+          description: The reservation was not found
+ 
