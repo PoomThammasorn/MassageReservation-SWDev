@@ -94,7 +94,6 @@ exports.getReservations = async (req,res,next) =>{
     }
 };
 
-
 //@desc Update reservation
 //route PUT /api/v1/reservations/:id
 //@access Private

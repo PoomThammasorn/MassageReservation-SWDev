@@ -759,3 +759,68 @@ paths:
           description: "Some error"
         "500":
           description: "Internal server error"
+  /reservations:
+    get:
+      tags: 
+        - "Reservations"
+      summary: Returns the list of all the reservations
+      description: "If user role: get all his/her reservations\nIf admin role: get all reservations in system"
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: The list of the hospitals
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Reservation'
+    put:
+      tags: 
+        - "Reservations"
+      summary: Update the a reservation by the id
+      description: "Update the a reservations info by the id"
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: The reservation id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Reservation'
+      responses:
+        200:
+          description: The reservation was updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reservation'
+        404:
+          description: The reservation was not found
+        500:
+          description: Some error happened
+
+    delete:
+      tags: 
+        - "Reservations"
+      summary: Remove the reservation by id
+      description: "Remove the reservation info by the id"
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: The reservation id  
+      responses:
+        200:
+          description: The reservation was deleted
+        404:
+          description: The reservation was not found
+ 
