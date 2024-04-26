@@ -1,0 +1,36 @@
+@startuml User Create Reservation Sequence Diagram
+title User Create Reservation (POST)
+actor User
+participant "<<javaScript>>\n:Server" as Server
+participant "<<middleware>>\n:Auth Middleware" as Auth
+participant "<<controllers>>\n:Reservation" as Controller
+participant "<<model>>\nReservation" as Model
+database "<<MongoDB>>\n:Reservation" as Database
+
+User -> Server: POST /api/v1/shops/:shopId/reservations
+activate Server
+
+Server -> Auth: protect(req, res, next)\n, authorize('user','admin')
+activate Auth
+
+Auth --> Server: Returns user data
+deactivate Auth
+
+Server -> Controller: addReservation(req, res, next)
+activate Controller
+
+Controller -> Model: create(req.body)
+activate Model
+
+Model -> Database ++: ReservationSchema
+Database -> Model --: reservation data
+
+Model --> Controller: Returns created reservation
+deactivate Model
+
+Controller --> Server: Returns success response with reservation data
+deactivate Controller
+
+Server --> User: Returns success response with reservation data
+deactivate Server
+@enduml

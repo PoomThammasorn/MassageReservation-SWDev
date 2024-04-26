@@ -1,0 +1,30 @@
+@startuml Admin Manage Massage Shops (GET ALL) 
+
+header Admin Massage Reservations Sequence Diagram
+title "Admin Manage Massage Shops (GET All) Admin"
+
+participant "Admin" as client
+participant "<<javaScript>>\n:server" as Server
+participant "<<middleware>>\n:Auth Middleware" as Auth
+participant "<<router>>\n:massageShops" as routerMassageShops
+participant "<<controllers>>\n:massageShops" as controllersMassageShops
+participant "<<model>>\n:User" as modelMassageShop
+database "<<MongoDB>>\n:massageShops" as ShopsDatabase
+
+client->Server ++:req.get('/shops')
+
+Server -> Auth: protect(req, res, next)\n, authorize('user','admin')
+activate Auth
+
+Auth --> Server: Returns admin data
+deactivate Auth
+
+Server->routerMassageShops ++:app.use('/shops',massageShops)
+routerMassageShops -> controllersMassageShops ++:getMassageShops()
+controllersMassageShops->modelMassageShop ++:find();
+modelMassageShop ->ShopsDatabase ++: MassageShopSchema
+ShopsDatabase --> modelMassageShop --: massageShops
+controllersMassageShops <-- modelMassageShop --:massageShops
+controllersMassageShops->client --:response
+
+@enduml

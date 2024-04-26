@@ -1,0 +1,30 @@
+@startuml User Manage Massage Shops (GET SINGLE) 
+
+header User Massage Reservations Sequence Diagram
+title "User Manage Massage Shops (GET Single)"
+
+participant "User" as client
+participant "<<javaScript>>\n:server" as Server
+participant "<<middleware>>\n:Auth Middleware" as Auth
+participant "<<router>>\n:massageShops" as routerMassageShops
+participant "<<controllers>>\n:massageShops" as controllersMassageShops
+participant "<<model>>\n:MassageShop" as modelMassageShop
+database "<<MongoDB>>\n:massageShops" as ShopsDatabase
+
+client->Server ++:req.get('/shops/:shopId')
+
+Server -> Auth: protect(req, res, next)\n, authorize('user','admin')
+activate Auth
+
+Auth --> Server: Returns user data
+deactivate Auth
+
+Server->routerMassageShops ++:app.use('/shops/:shopId',massageShops)
+routerMassageShops -> controllersMassageShops ++:getMassageShop()
+controllersMassageShops->modelMassageShop ++:findById(req.param.shopId);
+modelMassageShop ->ShopsDatabase ++: MassageShopSchema
+ShopsDatabase --> modelMassageShop --: massageShops
+controllersMassageShops <-- modelMassageShop --:massageShops
+controllersMassageShops->client --:response
+
+@enduml

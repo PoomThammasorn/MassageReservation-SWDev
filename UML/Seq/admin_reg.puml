@@ -1,0 +1,31 @@
+@startuml Admin Register Sequence Diagram  
+title Admin Register Sequence Diagram
+actor Admin
+participant "<<javaScript>>\n:Server" as Server
+participant "<<controllers>>\n:Auth Controller" as Auth
+participant "<<model>>\n:User" as Model
+database "<<MongoDB>>\n:User" as Database
+
+
+Admin -> Server: POST /api/v1/auth/register
+activate Server
+
+Server -> Auth: register(req, res, next)
+activate Auth
+
+Auth -> Model: create(req.body)
+activate Model
+
+Model -> Database ++: UserSchema
+Database -> Model --: admin data
+
+
+Model --> Auth: Returns created admin data
+deactivate Model
+
+Auth --> Server: sendTokenResponse(admin, 200, res)
+deactivate Auth
+
+Server --> Admin: Response with token
+deactivate Server
+@enduml
