@@ -2,6 +2,7 @@ const express = require("express");
 
 const {
     getReservations,
+    getReservation,
     addReservation,
     updateReservation,
     deleteReservation,
@@ -17,6 +18,7 @@ router
     .post(protect, authorize("user", "admin"), addReservation);
 router
     .route("/:id")
+    .get(protect,getReservation)
     .put(protect, authorize("admin", "user"), updateReservation)
     .delete(protect, authorize("admin", "user"), deleteReservation);
 module.exports = router;

@@ -1,0 +1,42 @@
+@startuml
+left to right direction
+package "MassageReservation"{
+    class "<<Application>>\nMassageReservationService" as MassageReservationService{}
+
+    class "<<Resource>>\nMassageShops" as ResourceMassageShops{
+        <<GET>> +getMassageShops():MassageShop
+        <<POST>> +createMassageShop():MassageShop
+    }
+
+    class "<<Resource>>\nMassageShop" as ResourceMassageShop {
+        <<GET>> +getMassageShop(): MassageShop
+        <<PUT>> +updateMassageShop(): MassageShop
+        <<DELETE>> +deleteMassageShop(): void
+    }
+
+    class "<<Representation>>\nMassageShop" as RepresentationMassageShop {
+        -name
+        -address
+        -district
+        -province
+        -postalcode
+        -tel
+        -open
+        -close
+    }
+
+    class "<<Resource>>\nReservations" as ResourceReservations{
+        <<POST>> +addReservation():Reservation
+    }
+
+    class "<<Resource>>\nReservation" as ResourceReservation{
+        <<PUT>> +updateReservation():Reservation
+        <<DELETE>> +deleteMassageShop(): void
+    }
+}
+
+MassageReservationService ..> ResourceMassageShops:"/shops\n<<Path>>"
+ResourceMassageShops ..> ResourceMassageShop: "/{shopId}\n<<Path>>"
+ResourceMassageShop ..> RepresentationMassageShop: "<<use>>"
+
+@enduml
