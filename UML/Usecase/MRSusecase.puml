@@ -27,7 +27,6 @@ register -- admin
 login -- admin
 logout -- admin
 manageMassageShop -- admin
-viewMassageShops -- admin
 manageReservation -- admin
 
 @enduml
