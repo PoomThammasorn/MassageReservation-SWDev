@@ -63,7 +63,7 @@ package "MassageReservation"{
         <<POST>> +sendOTP():void
     }
     class "<<Representation>>\nValidateOTP" as RepresentationValidateOTP{
-        <<POST>> +sendOTP():void
+        <<POST>> +validateOTP():void
     }
     class "<<Representation>>\nOTP" as RepresentationOTP {
         -email
