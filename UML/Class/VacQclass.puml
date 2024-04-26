@@ -25,6 +25,14 @@ package "MassageReservation"{
         -close
     }
 
+    class "<<Resource>>\nReservations" as ResourceReservations{
+        <<POST>> +addReservation():Reservation
+    }
+
+    class "<<Resource>>\nReservation" as ResourceReservation{
+        <<PUT>> +updateReservation():Reservation
+        <<DELETE>> +deleteMassageShop(): void
+    }
 }
 
 MassageReservationService ..> ResourceMassageShops:"/shops\n<<Path>>"
