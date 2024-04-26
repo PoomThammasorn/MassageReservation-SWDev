@@ -22,6 +22,10 @@ const UserSchema = new mongoose.Schema({
         required: [true, "Please add a phone number"],
         unique: true,
         length: [10, "Phone number must be 10 digits"],
+        format: {
+            with: /^[0-9]+$/,
+            message: "Only numbers are allowed",
+        },
     },
     role: {
         type: String,

@@ -1,0 +1,22 @@
+@startuml Manage Hospital (GET ALL)
+
+header Massage Reservations Sequence Diagram
+title "Manage Massage Shops (GET All)"
+
+participant "Client" as client
+participant "<<javaScript>>\n:server" as server
+participant "<<router>>\n:massageShops" as routerMassageShops
+participant "<<controllers>>\n:massageShops" as controllersMassageShops
+participant "<<model>>\n:Hospital" as modelMassageShop
+database "<<MongoDB>>\n:massageShops" as ShopsDatabase
+
+client->server ++:req.get('/shops')
+server->routerMassageShops ++:app.use('/shops',massageShops)
+routerMassageShops -> controllersMassageShops ++:getMassageShops()
+controllersMassageShops->modelMassageShop ++:find();
+modelMassageShop ->ShopsDatabase ++: MassageShopSchema
+ShopsDatabase --> modelMassageShop --: massageShops
+controllersMassageShops <-- modelMassageShop --:massageShops
+controllersMassageShops->client --:response
+
+@enduml
