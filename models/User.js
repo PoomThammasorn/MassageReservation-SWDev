@@ -21,10 +21,7 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: [true, "Please add a phone number"],
         unique: true,
-        match: [
-            /^(09|08|06)\d{8}$/,
-            (props) => `${props.value} is not a valid phone number`,
-        ],
+        length: [10, "Phone number must be 10 digits"],
     },
     role: {
         type: String,
