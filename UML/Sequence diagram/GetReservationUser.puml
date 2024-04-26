@@ -1,0 +1,25 @@
+@startuml User Manage Reservation (GET OWN RESERVATION)
+
+header Get Reservations Sequence Diagram
+footer Page %page% of %lastpage%
+title "User Manage Reservation (GET OWN RESERVATION)"
+
+participant "User" as client
+participant "<<javaScript>>\n:server" as server
+participant "Middleware" as middleware
+participant "<<router>>\n:reservations" as routerReservations
+participant "<<controllers>>\n:reservations" as controllerReservations
+participant "<<model>>\n:Reservation" as modelReservation
+database "<<MongoDB>>\n:reservations" as ReservationsDatabase
+
+client->server ++:req.get('/reservations')
+server -> middleware ++:protect(req, res, next)\n
+middleware --> server --:Returns user data
+server->routerReservations ++:app.use("reservations", reservations)
+routerReservations -> controllerReservations ++:getReservation()
+controllerReservations->modelReservation ++:find({user:req.user.id})
+modelReservation ->ReservationsDatabase ++: ReservationSchema
+ReservationsDatabase --> modelReservation --: reservation
+controllerReservations <-- modelReservation --:reservation
+controllerReservations->client --:response
+@enduml
